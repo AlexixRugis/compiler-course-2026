@@ -9,7 +9,6 @@
 #include "clang/Frontend/CompilerInstance.h"
 #include "clang/Frontend/FrontendPluginRegistry.h"
 #include "llvm/ADT/DenseSet.h"
-#include "llvm/Support/raw_ostream.h"
 
 namespace {
 class GutyanskyAstThrowFinder final
@@ -121,13 +120,9 @@ public:
       clang::QualType type = m_context->getFunctionTypeWithExceptionSpec(
           func->getType(), info.ExceptionSpec);
       func->setType(type);
-
-      llvm::outs() << "Function " << func->getNameAsString()
-                   << " updated to noexcept\n";
-    } else {
-      llvm::outs() << "Function " << func->getNameAsString()
-                   << " was not updated\n";
     }
+
+    func->dump();
 
     return true;
   }

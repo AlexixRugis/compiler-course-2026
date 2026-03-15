@@ -1,27 +1,4 @@
 // RUN: %clang_cc1 -fcxx-exceptions -fexceptions -load %llvmshlibdir/gutyansky_a_lab1_ClangAST%pluginext -plugin gutyansky_a_ast_noexcept_plugin -fsyntax-only %s 2>&1 | FileCheck %s
-// CHECK: Function empty updated to noexcept
-// CHECK-NEXT: Function emptyNoExcept was not updated
-// CHECK-NEXT: Function simpleNoThrow updated to noexcept
-// CHECK-NEXT: Function simpleThrow was not updated
-// CHECK-NEXT: Function conditionalThrow was not updated
-// CHECK-NEXT: Function simpleCall updated to noexcept
-// CHECK-NEXT: Function simpleCallThrow was not updated
-// CHECK-NEXT: Function lambdaThrow was not updated
-// CHECK-NEXT: Function lambdaNoThrow updated to noexcept
-// CHECK-NEXT: Function newThrow was not updated
-// CHECK-NEXT: Function fact updated to noexcept
-// CHECK-NEXT: Function recursiveThrow was not updated
-// CHECK-NEXT: Function pointerCall was not updated
-// CHECK-NEXT: Function Bar was not updated
-// CHECK-NEXT: Function Bar updated to noexcept
-// CHECK-NEXT: Function methodNoThrow updated to noexcept
-// CHECK-NEXT: Function methodThrow was not updated
-// CHECK-NEXT: Function methodVirtualNoThrow was not updated
-// CHECK-NEXT: Function constructNoThrow updated to noexcept
-// CHECK-NEXT: Function constructThrow was not updated
-// CHECK-NEXT: Function callMethodNoThrow updated to noexcept
-// CHECK-NEXT: Function callMethodThrow was not updated
-// CHECK-NEXT: Function callMethodVirtual was not updated
 
 void empty() {}
 
@@ -109,3 +86,22 @@ void callMethodVirtual() {
     Bar b(111);
     b.methodVirtualNoThrow();
 }
+
+// CHECK: FunctionDecl {{0x[0-9a-fA-F]+}} <{{.*}}> col:6 empty 'void () noexcept'
+// CHECK: FunctionDecl {{0x[0-9a-fA-F]+}} <{{.*}}> col:6 emptyNoExcept 'void () noexcept'
+// CHECK: FunctionDecl {{0x[0-9a-fA-F]+}} <{{.*}}> col:5 used simpleNoThrow 'int () noexcept'
+// CHECK: FunctionDecl {{0x[0-9a-fA-F]+}} <{{.*}}> line:9:6 simpleThrow 'void ()'
+// CHECK: FunctionDecl {{0x[0-9a-fA-F]+}} <{{.*}}> line:13:6 used conditionalThrow 'void (bool)'
+// CHECK: FunctionDecl {{0x[0-9a-fA-F]+}} <{{.*}}> line:19:5 simpleCall 'int () noexcept'
+// CHECK: FunctionDecl {{0x[0-9a-fA-F]+}} <{{.*}}> line:23:6 simpleCallThrow 'void ()'
+// CHECK: FunctionDecl {{0x[0-9a-fA-F]+}} <{{.*}}> line:27:6 lambdaThrow 'void ()'
+// CHECK: FunctionDecl {{0x[0-9a-fA-F]+}} <{{.*}}> line:32:6 lambdaNoThrow 'void () noexcept'
+// CHECK: FunctionDecl {{0x[0-9a-fA-F]+}} <{{.*}}> line:37:6 newThrow 'void ()'
+// CHECK: FunctionDecl {{0x[0-9a-fA-F]+}} <{{.*}}> line:42:5 used fact 'int (int) noexcept'
+// CHECK: FunctionDecl {{0x[0-9a-fA-F]+}} <{{.*}}> line:47:5 recursiveThrow 'int (int)'
+// CHECK: FunctionDecl {{0x[0-9a-fA-F]+}} <{{.*}}> line:52:6 pointerCall 'void (void (*)(int))'
+// CHECK: FunctionDecl {{0x[0-9a-fA-F]+}} <{{.*}}> line:67:6 constructNoThrow 'void () noexcept'
+// CHECK: FunctionDecl {{0x[0-9a-fA-F]+}} <{{.*}}> line:71:6 constructThrow 'void ()'
+// CHECK: FunctionDecl {{0x[0-9a-fA-F]+}} <{{.*}}> line:75:6 callMethodNoThrow 'void () noexcept'
+// CHECK: FunctionDecl {{0x[0-9a-fA-F]+}} <{{.*}}> line:80:6 callMethodThrow 'void ()'
+// CHECK: FunctionDecl {{0x[0-9a-fA-F]+}} <{{.*}}> line:85:6 callMethodVirtual 'void ()'
