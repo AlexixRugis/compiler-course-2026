@@ -76,8 +76,6 @@ struct GutyanskyAMulDivOptim : llvm::PassInfoMixin<GutyanskyAMulDivOptim> {
       }
     }
 
-    func.dump();
-
     return hasChanges ? llvm::PreservedAnalyses::none()
                       : llvm::PreservedAnalyses::all();
   }
