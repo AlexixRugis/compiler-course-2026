@@ -173,16 +173,3 @@ define i32 @div_by_2_30_u(i32 %x) {
   ret i32 %div
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
