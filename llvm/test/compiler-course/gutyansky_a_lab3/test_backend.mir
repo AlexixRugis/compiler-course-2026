@@ -93,3 +93,26 @@ body:             |
     RET64
 ...
 
+# CHECK-LABEL: name: no_double_check
+# CHECK:         $rax = MOVSX64rr32 $esi
+# CHECK-NEXT:    $rdi = COPY $rdi
+# CHECK-NEXT:    CALL64pcrel32 &check_null
+# CHECK-NEXT:    MOV32mr $rdi
+---
+name:            no_double_check
+tracksRegLiveness: true
+liveins:
+  - { reg: '$rdi' }
+  - { reg: '$esi' }
+  - { reg: '$edx' }
+body:             |
+  bb.0:
+    liveins: $edx, $esi, $rdi
+  
+    $rax = MOVSX64rr32 $esi
+    $rdi = COPY $rdi
+    CALL64pcrel32 &check_null, implicit $rsp, implicit $ssp
+    MOV32mr $rdi, 4, $rax, 0, $noreg, $edx
+    RET64
+...
+
